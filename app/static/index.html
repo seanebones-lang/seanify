@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Seanify</title>
+  <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+  <div class="app" id="app" data-transition="idle">
+    <div class="panels" id="panels">
+    <aside class="sidebar" id="library-panel">
+      <button type="button" class="brand" data-view="home" aria-label="Seanify">
+        <img src="/logo.png" alt="">
+        <span>Seanify</span>
+      </button>
+      <nav class="primary" aria-label="Primary">
+        <button type="button" class="nav" data-view="home">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.5 3.2 4 9.1V20h5.2v-6.2h5.6V20H20V9.1l-7.5-5.9z"/></svg>
+          Home
+        </button>
+        <button type="button" class="nav on" data-view="search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 3a7.5 7.5 0 0 1 5.96 12.05l4.24 4.25-1.4 1.4-4.25-4.24A7.5 7.5 0 1 1 10.5 3zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11z"/></svg>
+          Search
+        </button>
+      </nav>
+      <section class="library-panel">
+        <header class="library-head">
+          <button type="button" class="nav library-toggle" data-view="library">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H9v18H6.5A2.5 2.5 0 0 1 4 18.5v-13zM11 3h6.5A2.5 2.5 0 0 1 20 5.5v13a2.5 2.5 0 0 1-2.5 2.5H11V3z"/></svg>
+            Your Library
+          </button>
+          <button type="button" class="icon-btn" id="lib-collapse" title="Collapse library" aria-label="Collapse library">
+            <svg viewBox="0 0 16 16"><path d="M6 3.5 2.5 8 6 12.5M10 3.5 13.5 8 10 12.5"/></svg>
+          </button>
+          <button type="button" class="icon-btn" id="new-list" title="New playlist" aria-label="New playlist">
+            <svg viewBox="0 0 16 16"><path d="M3 2.5h7.5v11H3zM11 5.5h2.2v8H6.2"/></svg>
+          </button>
+          <button type="button" class="icon-btn" id="add-music" title="Add your music" aria-label="Add your music">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5v13M1.5 8h13"/></svg>
+          </button>
+          <input id="file-input" type="file" accept="audio/*,.mp3,.m4a,.wav,.flac,.aac,.ogg,.aiff" multiple hidden>
+        </header>
+        <div class="filters">
+          <button type="button" class="chip on" data-chip="playlists">Playlists</button>
+          <button type="button" class="chip" data-chip="albums">Albums</button>
+          <button type="button" class="chip" data-chip="artists">Artists</button>
+          <button type="button" class="chip" data-chip="liked">Liked</button>
+        </div>
+        <select id="lib-sort" aria-label="Sort library">
+          <option value="alpha">Alphabetical</option>
+          <option value="recent">Recently played</option>
+          <option value="added">Recently added</option>
+        </select>
+        <input id="lib-q" class="lib-q" type="search" placeholder="Search in Your Library" autocomplete="off" spellcheck="false">
+        <div class="plist-scroll">
+          <button type="button" class="plist on" data-view="library">
+            <span class="liked" aria-hidden="true"></span>
+            <span>
+              <strong>Your music</strong>
+              <small>Playlist · Local files</small>
+            </span>
+          </button>
+        </div>
+      </section>
+    </aside>
+    <div class="splitter" id="splitter" role="separator" aria-orientation="vertical" aria-label="Resize library" tabindex="0"></div>
+
+    <main class="stage">
+      <header class="topbar">
+        <div class="history">
+          <button type="button" class="circle" id="back" aria-label="Back" disabled>
+            <svg viewBox="0 0 16 16"><path d="M10.5 2.5 5 8l5.5 5.5"/></svg>
+          </button>
+          <button type="button" class="circle" id="forward" aria-label="Forward" disabled>
+            <svg viewBox="0 0 16 16"><path d="M5.5 2.5 11 8l-5.5 5.5"/></svg>
+          </button>
+        </div>
+        <form id="search-form" class="search-pill">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 3a7.5 7.5 0 0 1 5.96 12.05l4.24 4.25-1.4 1.4-4.25-4.24A7.5 7.5 0 1 1 10.5 3zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11z"/></svg>
+          <input id="q" type="search" placeholder="What do you want to play?" autocomplete="off" spellcheck="false">
+        </form>
+      </header>
+      <div id="view" class="view"></div>
+    </main>
+    <aside class="npv NowPlayingView" id="npv" aria-label="Now Playing">
+      <header class="npv-head">
+        <strong>Now playing</strong>
+        <button type="button" class="icon-btn" id="npv-close" aria-label="Close now playing">
+          <svg viewBox="0 0 16 16"><path d="M3.5 3.5 12.5 12.5M12.5 3.5 3.5 12.5"/></svg>
+        </button>
+      </header>
+      <div class="npv-cover" id="npv-art"></div>
+      <div class="npv-title" id="npv-title">Nothing playing</div>
+      <div class="npv-artist" id="npv-artist">Pick a row.</div>
+      <div class="npv-queue" id="npv-queue"></div>
+    </aside>
+    </div>
+
+    <footer class="player" id="player">
+      <div class="now">
+        <div class="cover" id="now-art"></div>
+        <div class="now-text">
+          <div class="now-title" id="now-title">Choose a song</div>
+          <div class="now-artist" id="now-artist">Your songs. Nothing leaves this Mac.</div>
+        </div>
+        <button type="button" class="heart" id="like" aria-label="Save to Liked" hidden>
+          <svg viewBox="0 0 16 16"><path d="M8 13.4 2.6 8.2a3.2 3.2 0 0 1 4.5-4.5L8 4.6l.9-.9a3.2 3.2 0 0 1 4.5 4.5L8 13.4z"/></svg>
+        </button>
+      </div>
+      <div class="transport">
+        <div class="controls">
+          <button type="button" class="ctrl" id="shuffle" aria-label="Shuffle">
+            <svg viewBox="0 0 16 16"><path d="M11.2 3.2h2.2v2.2M13.4 3.2 9.2 7.4M11.2 12.8h2.2v-2.2M13.4 12.8 9.2 8.6M2.4 4.2h2.2l2.1 3.2M2.4 11.8h2.2L6.7 8.6"/></svg>
+          </button>
+          <button type="button" class="ctrl" id="prev" aria-label="Previous">
+            <svg viewBox="0 0 16 16"><path d="M3.3 2.5v11h1.6v-4.2L13 13.5V2.5L4.9 6.7V2.5H3.3z"/></svg>
+          </button>
+          <button type="button" class="play-main" id="play" aria-label="Play">
+            <svg id="play-icon" viewBox="0 0 16 16"><path d="M4.2 2.4v11.2L13.6 8 4.2 2.4z"/></svg>
+          </button>
+          <button type="button" class="ctrl" id="next" aria-label="Next">
+            <svg viewBox="0 0 16 16"><path d="M12.7 2.5v4.2L3 2.5v11l9.7-4.2v4.2h1.6v-11h-1.6z"/></svg>
+          </button>
+          <button type="button" class="ctrl" id="repeat" aria-label="Repeat">
+            <svg viewBox="0 0 16 16"><path d="M3.2 5.2A4.2 4.2 0 0 1 8 3.2h3.2M11.2 2.2l1.2 1.2-1.2 1.2M12.8 10.8A4.2 4.2 0 0 1 8 12.8H4.8M4.8 13.8 3.6 12.6l1.2-1.2"/></svg>
+          </button>
+        </div>
+        <div class="seek-row">
+          <span id="time-now">0:00</span>
+          <input id="seek" type="range" min="0" max="1000" value="0" aria-label="Seek">
+          <span id="time-end">0:00</span>
+        </div>
+      </div>
+      <div class="volume">
+        <button type="button" class="icon-btn" id="mute" aria-label="Mute" title="Mute">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6.2v3.6h2.4L8.2 13V3L4.4 6.2H2zm7.1-1.6v6.8a3.2 3.2 0 0 0 0-6.8z"/></svg>
+        </button>
+        <input id="volume" type="range" min="0" max="100" value="80" aria-label="Volume">
+        <button type="button" class="ctrl" id="mini-open" aria-label="Mini player" title="Mini player">
+          <svg viewBox="0 0 16 16"><path d="M2 3.2h7.2v6.2H2zM10.4 6.2H14v6.6H6.8V11"/></svg>
+        </button>
+        <button type="button" class="ctrl" id="npv-toggle" aria-label="Now playing view" title="Now playing">
+          <svg viewBox="0 0 16 16"><path d="M2 3.5h4.2v9H2zm5.2 0H14v2.2H7.2zm0 3.4H14v2.2H7.2zm0 3.4H14v2.2H7.2z"/></svg>
+        </button>
+      </div>
+      <audio id="audio" preload="metadata"></audio>
+    </footer>
+  </div>
+  <script src="/app.js"></script>
+</body>
+</html>

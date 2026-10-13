@@ -1,0 +1,8 @@
+Spotify.dmg
+analysis/
+evidence/
+app/library/
+app/__pycache__/
+app/server 2.py
+.DS_Store
+*.pyc
