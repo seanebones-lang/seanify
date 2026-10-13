@@ -1,6 +1,6 @@
 # Seanify
 
-Local music player for this Mac. Your files stay on disk. Nothing is uploaded and there is no connection to a music service.
+Local music player. Your files stay on disk. Nothing is uploaded and there is no connection to a music service.
 
 ## Run
 
